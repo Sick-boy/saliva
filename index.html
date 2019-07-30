@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>SALIVA</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div class="block">
+        <div id="container">
+          <img src="./img/1.jpg" alt="img" />
+          <img src="./img/2.jpg" alt="img" />
+          <img src="./img/3.jpg" alt="img" />
+          <img src="./img/4.jpg" alt="img" />
+          <img src="./img/5.jpg" alt="img" />
+          <img src="./img/6.jpg" alt="img" />
+        </div>
+    </div>
+
+    <div class="block">
+        <div id="container2">
+          <img src="./img/1.jpg" alt="img" />
+          <img src="./img/2.jpg" alt="img" />
+          <img src="./img/3.jpg" alt="img" />
+          <img src="./img/4.jpg" alt="img" />
+          <img src="./img/5.jpg" alt="img" />
+          <img src="./img/6.jpg" alt="img" />
+          <img src="./img/7.jpg" alt="img" />
+          <img src="./img/8.jpg" alt="img" />
+          <img src="./img/9.jpg" alt="img" />
+          <img src="./img/10.jpg" alt="img" />
+        </div>
+    </div>
+
+
+    <script type="text/javascript" src="script-new.js"></script>
+    <script type="text/javascript">
+      var Slider1 = new Slider("container");
+
+      Slider1.init({ dots: false,
+                     width: 600,
+                     height: 300,
+                     buttons: true,
+                     buttonsCustomClass: ['one', 'two']
+      });
+
+      var Slider2 = new Slider("container2");
+      Slider2.init({autoscroll: true,
+                    counter: true,
+                    buttons: true,
+                    startFrom: 4
+      });
+
+    </script>
+  </body>
+</html>
