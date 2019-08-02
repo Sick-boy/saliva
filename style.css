@@ -1,6 +1,7 @@
 .block {
-  width: 600px;
-  height: 300px;
+  display: flex;
+  justify-content: center;
+  margin: 130px auto;
   margin: 100px auto;
   position: relative;
 }
@@ -8,4 +9,9 @@
 .one {
   background-color: rgba(255, 0, 0, .5) !important;
   border-radius: 30px;
+}
+
+#container {
+  width: 1200px;
+  height: 400px;
 }

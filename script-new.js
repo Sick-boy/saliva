@@ -1,6 +1,7 @@
 function Slider(target) {
 
   var container,
+      containerDefault = document.getElementById(target),
       imgs,
       index = 0,
       count = index + 1,
@@ -11,28 +12,41 @@ function Slider(target) {
       mergedOptions,
       defaultOptions;
 
-
 /******** PUBLIC METHODS ********/
   this.destroy = function() {
-    var parent = container.parentElement;
 
-    while (parent.firstChild) {
-      parent.removeChild(parent.firstChild);
-    };
-
-    parent.parentElement.removeChild(parent);
+    // autoscroll disable
     window.clearInterval(scroll);
+    // buttons removal
+    if (mergedOptions.buttons === true) {
+      var btnToRemove = container.getElementsByTagName('button');
+      for (var i = btnToRemove.length - 1; i >= 0; i--) {
+        btnToRemove[i].remove();
+      }
+    }
+    // dots removal
+    if (mergedOptions.dots === true) {
+      var dotsToRemove = container.getElementsByTagName('ul');
+      for (var i = dotsToRemove.length - 1; i >= 0; i--) {
+        dotsToRemove[i].remove();
+      }
+    }
+    //counter removal
+    if (mergedOptions.counter === true) {
+      var counterToRemove = container.getElementsByTagName('div');
+      for (var i = counterToRemove.length - 1; i >= 0; i--) {
+        counterToRemove[i].remove();
+      }
+    }
+    // container's styling reversal
+    for (var i = imgs.length - 1; i >= 0; i--) {
+      imgs[i].style.cssText = '';
+    }
+    container.style.cssText = '';
 
-    container = null;
-    imgs   = null;
-    index = null;
-    count = null;
-    pageCounter = null;
-    dotsContainer = null;
-    dots = null;
-    scroll = null;
-    mergedOptions = null;
-    defaultOptions = null;
+    // nullification of methods
+    this.init = null;
+    this.destroy = null;
   };
 
   this.init = function (userOptions) {
@@ -44,8 +58,8 @@ function Slider(target) {
         buttons: false,
         buttonsCustomClass: [],
         dots: true,
-        width: '-webkit-fill-available',
-        height: '-webkit-fill-available',
+        width: containerDefault.offsetWidth,
+        height: containerDefault.offsetHeight,
         startFrom: 0
     };
 
@@ -87,27 +101,19 @@ function Slider(target) {
   };
 
 /******** CONTROL FUNCTIONS ********/
+
   function buildContainer() {
     // Container initialization
     container = document.getElementById(target);
-    imgs = container.children;
+    imgs = container.getElementsByTagName('img');
 
-    container.style.cssText = 'position: relative; overflow: hidden; display: inline-block';
-    if (typeof mergedOptions.width === 'number') {
-      container.style.width = mergedOptions.width + 'px';
-    } else {
-      container.style.width = mergedOptions.width;
-    };
-
-    if (typeof mergedOptions.height === 'number') {
-      container.style.height = mergedOptions.height + 'px';
-    } else {
-      container.style.height = mergedOptions.height;
-    };
+    container.style.cssText = 'position: relative; display: inline-block';
+    container.style.width = mergedOptions.width + 'px';
+    container.style.height = mergedOptions.height + 'px';
 
     // Images initial alignment
     for (var i = 0; i < imgs.length; i++) {
-      imgs[i].style.cssText = 'position: absolute; z-index: 0; width:' + mergedOptions.width + 'px;';
+      imgs[i].style.cssText = 'position: absolute; z-index: 0; width:' + mergedOptions.width + 'px; height:' + mergedOptions.height + 'px;';
     }
     imgs[index].style.zIndex  = "1";
   };
@@ -149,7 +155,7 @@ function Slider(target) {
         } else {
             btn.style.top = '50%';
         };
-        btn.style.right = (container.parentElement.offsetWidth - container.offsetWidth) + 'px';
+        btn.style.right = '0';
 
           // if custom classes are set
           if (mergedOptions.buttonsCustomClass.length > 0) {
@@ -163,7 +169,7 @@ function Slider(target) {
           restartAutoscroll();
         });
       }
-      container.parentElement.appendChild(btn);
+      container.appendChild(btn);
     };
   };
 
@@ -171,8 +177,8 @@ function Slider(target) {
     //page counter creation
     pageCounter = document.createElement('div');
     pageCounter.innerHTML = count + "/" + (imgs.length);
-    pageCounter.style.textAlign = "center";
-    container.parentElement.appendChild(pageCounter);
+    pageCounter.style.cssText = "text-align: center; position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%);";
+    container.appendChild(pageCounter);
   };
 
   function switchImage(arg) {
@@ -217,13 +223,15 @@ function Slider(target) {
   };
 
   function changeCounter (count) {
-       pageCounter.innerHTML = count + "/" + (imgs.length);
+      if (mergedOptions.counter === true) {
+        pageCounter.innerHTML = count + "/" + (imgs.length);
+      }
   };
 
   function buildDots() {
     dotsContainer = document.createElement('ul');
     dotsContainer.style.cssText = "position: absolute; bottom: 5px; left: 50%; transform: translateX(-50%); z-index: 2; margin: 0; padding: 0;"
-    container.parentElement.appendChild(dotsContainer);
+    container.appendChild(dotsContainer);
 
     for (var i = 0; i < imgs.length; i++) {
       var dot  = document.createElement('li');
